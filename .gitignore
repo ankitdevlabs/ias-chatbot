@@ -1,0 +1,109 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+pip-wheel-metadata/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtualenv
+venv/
+ENV/
+env/
+.env/
+.venv/
+venv.bak/
+*.venv
+.env
+
+# Pyenv
+.python-version
+
+# Poetry
+.venv/
+poetry.lock
+
+# Editor directories and files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Type checker / test caches
+.mypy_cache/
+.pycache/
+.pytest_cache/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+
+# Environment files
+.env
+.env.*
+# If you use a YAML file for production secrets, ignore it too
+production.yaml
+src/production.yaml
+
+# Database files
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# FastAPI / Uvicorn
+# ignore typical runtime log files and PID files
+*.pid
+
+# Docker
+docker-compose.override.yml
+.env.docker
+
+# Node (if frontend)
+node_modules/
+
+# Static / uploads
+staticfiles/
+media/
+uploads/
+
+# Celery
+celerybeat-schedule
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini

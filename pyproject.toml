@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "chatbot"
+version = "0.1.0"
+description = ""
+authors = [
+     "Ankit Shrestha <ankit.shrestha196@gmail.com>"
+]
+readme = "README.md"
+
+packages = [
+    {include="chatbot", from="src"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fire = "^0.7.1"
+fastapi = "^0.135.3"
+uvicorn = "^0.44.0"
+pydantic-settings = "^2.13.1"
+pyaml = "^26.2.1"
+
+[tool.poetry.scripts]
+cli="cli.web_cli:main"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
