@@ -34,7 +34,7 @@ cd ias-chatbot
 ```
 src->chatbot->production.yaml
 inside this add
-gemini_api_Kkey=your_api_key_here
+gemini_api_key=your_api_key_here
 ```
 
 ### 3. Install dependecies
