@@ -14,6 +14,8 @@ class AppSettings(BaseSettings):
 
     app_name: str = "IAT AI Chatbot"
 
+    gemini_api_key: str
+
     debug: bool = True
     introspection: bool = True
 

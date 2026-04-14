@@ -7,14 +7,12 @@ from chatbot.controller.chat_controller import ChatController
 router = APIRouter(tags=["chat"])
 
 
-@router.post("/chat")
-def chat(
-    payload: MessageRequest,
-    service: ChatController = Depends(get_chat_controller),
+@router.post("/")
+async def chat(
+    data: MessageRequest,
+    controller: ChatController = Depends(get_chat_controller),
 ):
-    # response = chatbot_response(message.text)
-    # return {"response": response}
-    pass
+    return await controller.get_response(data)
 
 
 @router.options("/chat")

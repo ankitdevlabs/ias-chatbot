@@ -1,7 +1,10 @@
 """Chatbot service"""
 
-from chatbot.service.chat_service import ChatService
+from fastapi.responses import JSONResponse
+
+from chatbot.helpers.exceptions import ChatServiceError
 from chatbot.model.entities import MessageRequest
+from chatbot.service.chat_service import ChatService
 
 
 class ChatController:
@@ -9,6 +12,20 @@ class ChatController:
     def __init__(self, service: ChatService):
         self.service = service
 
-    async def chat_response(self, msg: MessageRequest):
+    async def get_response(self, msg: MessageRequest):
 
-        await self.service.build_static_response(msg)
+        try:
+            response = await self.service.get_response(msg)
+
+            return JSONResponse(status_code=200, content={"data": response})
+
+        except ChatServiceError as e:
+            return JSONResponse(
+                status_code=503, content={"success": False, "error": e.message}
+            )
+
+        except Exception as e:
+            return JSONResponse(
+                status_code=500,
+                content={"success": False, "error": "Internal server error"},
+            )

@@ -1,22 +1,51 @@
+"""Chat service"""
+
+from google import genai
+
+from chatbot.configs.constants import KNOWLEDGE_BASE
 from chatbot.model.entities import MessageRequest
+from chatbot.helpers.exceptions import ChatServiceError
 
 
 class ChatService:
     def __init__(self, settings):
         self.settings = settings
+        self.client = genai.Client(api_key=settings.gemini_api_key)
 
-    async def build_static_response(self, msg: MessageRequest) -> str:
-        if "service" in msg.text:
-            return "We provide IT networking, security, and infrastructure solutions."
+    async def get_response(self, msg: MessageRequest) -> str:
+        text = msg.text.lower().strip()
 
-        elif "contact" in msg.text:
-            return "You can contact us through the contact page on our website."
+        static_response = await self._get_static_response(text)
+        if static_response:
+            return static_response
 
-        elif "location" in msg.text:
-            return "Please check our website for our office location details."
+        return await self._ask_ai(text)
 
-        elif "hello" in msg.text or "hi" in msg.text:
-            return "Hey! How can I assist you today?"
+    async def _get_static_response(self, text: str):
+        for key, value in KNOWLEDGE_BASE.items():
+            if key in text:
+                return value
+        return None
 
-        else:
-            return "I'm not sure about that yet, but I can help with services and contact info!"
+    async def _ask_ai(self, text: str) -> str:
+        prompt = f"""
+            You are a helpful AI assistant for an IT networking company.
+
+            Be concise, professional, and helpful.
+
+            User: {text}
+            Assistant:
+        """
+
+        try:
+            response = self.client.models.generate_content(
+                model="gemini-2.0-flash", contents=prompt
+            )
+
+            if not response or not response.text:
+                raise ChatServiceError("Service is Currently Not available")
+
+            return response.text.strip()
+
+        except Exception as e:
+            raise ChatServiceError(f"AI service failed: {str(e)}")

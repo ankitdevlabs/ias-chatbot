@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IAT Chatbot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-box {
+      width: 380px;
+      height: 500px;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .msg {
+      margin: 6px 0;
+      display: flex;
+    }
+
+    .user {
+      justify-content: flex-end;
+    }
+
+    .bot {
+      justify-content: flex-start;
+    }
+
+    .bubble {
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 70%;
+    }
+
+    .user .bubble {
+      background: #2563eb;
+      color: white;
+    }
+
+    .bot .bubble {
+      background: #e5e7eb;
+    }
+
+    .input-box {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #111827;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1f2937;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="chat-box">
+  <div class="header">IAT Chatbot</div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="input-box">
+    <input id="input" placeholder="Ask something..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+const API_URL = "http://127.0.0.1:9000";
+
+function addMessage(text, type) {
+  const messages = document.getElementById("messages");
+
+  const div = document.createElement("div");
+  div.className = `msg ${type}`;
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.innerText = text;
+
+  div.appendChild(bubble);
+  messages.appendChild(div);
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById("input");
+  const text = input.value;
+
+  if (!text) return;
+
+  addMessage(text, "user");
+  input.value = "";
+
+  addMessage("Typing...", "bot");
+
+  const messages = document.getElementById("messages");
+  const typingMsg = messages.lastChild;
+
+  const res = await fetch(`${API_URL}/api/v1/chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text })
+  });
+
+  const response = await res.json();
+
+  messages.removeChild(typingMsg);
+
+  console.log(res)
+
+  if (!res.ok || data.error) {
+      addMessage(
+        "Service is currently unavailable. Please try again later.",
+        "bot"
+      );
+      return;
+    }
+
+  addMessage(response.data, "bot");
+}
+</script>
+
+</body>
+</html>
