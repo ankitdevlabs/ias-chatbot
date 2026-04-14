@@ -149,9 +149,7 @@ async function sendMessage() {
 
   messages.removeChild(typingMsg);
 
-  console.log(res)
-
-  if (!res.ok || data.error) {
+  if (!res.ok) {
       addMessage(
         "Service is currently unavailable. Please try again later.",
         "bot"
